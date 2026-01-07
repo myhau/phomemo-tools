@@ -34,10 +34,16 @@ $ sudo rfcomm connect 0 DC:0D:30:90:23:C7
   Press CTRL-C for hangup
 ```
 
-* Send the picture to the printer (the python script currently only works with M02 printers):
+* Send the picture to the printer:
 
 ```
+  # M02 (default)
   tools/phomemo-filter.py my_picture.png > /dev/rfcomm0
+
+  # M110/M120/M220/M421
+  tools/phomemo-filter.py -m m110 my_picture.png > /dev/rfcomm0
+  tools/phomemo-filter.py -m m110 --speed 3 --density 12 my_picture.png > /dev/rfcomm0
+  tools/phomemo-filter.py -m m110 --media-type continuous my_picture.png > /dev/rfcomm0
 ```
 
 ### 1.2. USB
@@ -78,12 +84,14 @@ You can see the serial port in the dmesg and in /dev:
   crw-rw----. 1 root lp   180,  0 Dec  5 17:44 lp0
 ```
 
-* Send the picture to the printer (the python script currently only works with M02 printers):
-
-You need to be root or in the lp group
+* Send the picture to the printer (you need to be root or in the lp group):
 
 ```
-  # tools/phomemo-filter.py my_picture.png > /dev/usb/lp0
+  # M02 (default)
+  tools/phomemo-filter.py my_picture.png > /dev/usb/lp0
+
+  # M110/M120/M220/M421
+  tools/phomemo-filter.py -m m110 my_picture.png > /dev/usb/lp0
 ```
 
 ## 2. CUPS
