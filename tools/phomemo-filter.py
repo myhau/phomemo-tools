@@ -6,7 +6,7 @@ import argparse
 import os
 import sys
 
-from PIL import Image
+from PIL import Image, ImageOps
 
 # Printer model configurations
 PRINTER_MODELS = {
@@ -154,6 +154,8 @@ def print_footer_m110():
 
 def print_image_m110(image, bytes_per_line, speed=5, density=10, media_type=10):
     """Print image using M110 protocol (single block, no chunking)."""
+    # Invert: PIL mode '1' has 0=black, 1=white, but thermal printer expects 1=burn(black)
+    image = ImageOps.invert(image)
     print_header_m110(speed, density, media_type)
     print_marker_m110(bytes_per_line, image.height)
     with os.fdopen(sys.stdout.fileno(), "wb", closefd=False) as stdout:
